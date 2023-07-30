@@ -12,5 +12,5 @@ for i in range(1, n+1):
             else:
                 print(" ",end="")
     for l in range(n-i):
-        print(" ", end="")
+        print(" ", end="")sdfds
     print()
