@@ -1,0 +1,39 @@
+def solution(n, k, cmd):
+    answer = ""
+    for i in range(n):
+        answer += "O"
+    cur = k
+    length = n
+    discard = []
+    recent = []
+    for i in range(len(cmd)):
+        command = ""
+        pos = ""
+        if len(cmd[i]) == 1:
+            command = cmd[i]
+        else:
+            command, pos = cmd[i].split(" ")
+        if command == "U":
+            cur -= int(pos)
+        elif command == "D":
+            cur += int(pos)
+        elif command == "C":
+            discard.append(cur)
+            recent.append(cur)
+            if cur == length:
+                cur -= 1
+                length -= 1
+            else:
+                cur += 1
+                length -= 1
+        elif command == "Z":
+            tmp = recent.pop()
+            discard.remove(tmp)
+        for i in range(len(discard)):
+            a = list(answer)
+            a[discard[i]] = "X"
+            answer = "".join(a)
+    return answer
+
+
+print(solution(8, 2, ["D 2", "C", "U 3", "C", "D 4", "C", "U 2", "Z", "Z"]))
