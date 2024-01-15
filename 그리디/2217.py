@@ -12,4 +12,4 @@ cnt = 1
 for i in w:
     ans.append(i * cnt)
     cnt += 1
-print(max(an))
+print(max(ans))
