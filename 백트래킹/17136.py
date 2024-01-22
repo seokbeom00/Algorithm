@@ -40,7 +40,7 @@ def backtracking(x, y, arr, paper_type):
             if find_one(x, y, arr, size, paper_type):
                 # 해당 크기의 종이로 채울 수 있다면, 그 상태에서 계속 백트래킹
                 backtracking(x, y + size, arr, paper_type)
-                # 백트래킹 후, 원래 상태로 되돌리기 (종이 제거)
+                # 백트래킹 후, 원래 상태로 되돌리기
                 for i in range(size):
                     for j in range(size):
                         if i + x < 10 and j + y < 10:
