@@ -1,74 +1,55 @@
 import sys
-from itertools import permutations
 from copy import deepcopy
 
 input = sys.stdin.readline
 paper = []
 for i in range(10):
     paper.append(list(map(int, input().split())))
+type = [0, 0, 0, 0, 0]  # 크기1, 크기2, 크기3, 크기4, 크기5
+ans = []
 
 
-def find_one(x, y, num, tmp):
+def find_one(x, y, arr, num, paper_type):
+    if paper_type[num - 1] >= 5:  # 이미 해당 크기의 종이를 5개 사용한 경우
+        return False
     for i in range(num):
         for j in range(num):
-            if x + i > 9 or y + j > 9:
+            if i + x > 9 or y + j > 9 or arr[i + x][j + y] == 0:
                 return False
-            if tmp[x + i][y + j] == 0:
-                return False
+    paper_type[num - 1] += 1
     for i in range(num):
         for j in range(num):
-            tmp[x + i][y + j] = 0
+            arr[i + x][j + y] = 0
     return True
 
 
-def count(num, a, b, c, d, e):
-    if num == 5:
-        e += 1
-    elif num == 4:
-        d += 1
-    elif num == 3:
-        c += 1
-    elif num == 2:
-        b += 1
+def backtracking(x, y, arr, paper_type):
+    global ans
+    if all(cell == 0 for row in arr for cell in row):  # 모든 칸이 0이면 종료 조건 충족
+        if not ans or sum(paper_type) < sum(ans):  # 최소한의 종이 사용으로 모든 칸을 채운 경우
+            ans = paper_type[:]
+        return
+    if y >= 10:  # 현재 행이 끝나면 다음 행으로 이동
+        backtracking(x + 1, 0, arr, paper_type)
+        return
+
+    if arr[x][y] == 0:  # 이미 채워진 칸은 건너뜀
+        backtracking(x, y + 1, arr, paper_type)
+    else:
+        for size in range(1, 6):  # 1부터 5 크기의 종이 조각 시도
+            if find_one(x, y, arr, size, paper_type):
+                # 해당 크기의 종이로 채울 수 있다면, 그 상태에서 계속 백트래킹
+                backtracking(x, y + size, arr, paper_type)
+                # 백트래킹 후, 원래 상태로 되돌리기 (종이 제거)
+                for i in range(size):
+                    for j in range(size):
+                        if i + x < 10 and j + y < 10:
+                            arr[i + x][j + y] = 1
+                paper_type[size - 1] -= 1
 
 
-def print_paper():
-    for i in range(10):
-        for j in range(10):
-            print(paper[i][j], end=" ")
-        print()
-
-
-arr = [2, 3, 4, 5]
-npr = list(permutations(arr, 4))
-for i in npr:
-    min = 100
-    a, b, c, d, e = 0, 0, 0, 0, 0  # 5종류의 색종이
-    tmp = deepcopy(paper)
-    for j in range(10):
-        for k in range(10):
-            find_one(j, k, i[0], tmp)
-            count(i[0], a, b, c, d, e)
-    for j in range(10):
-        for k in range(10):
-            find_one(j, k, i[1], tmp)
-            count(i[1], a, b, c, d, e)
-    for j in range(10):
-        for k in range(10):
-            find_one(j, k, i[2], tmp)
-            count(i[2], a, b, c, d, e)
-    for j in range(10):
-        for k in range(10):
-            find_one(j, k, i[3], tmp)
-            count(i[3], a, b, c, d, e)
-    for j in range(10):
-        for k in range(10):
-            find_one(j, k, 1, tmp)
-            a += 1
-    if a <= 5 and b <= 5 and c <= 5 and d <= 5 and e <= 5:
-        if a + b + c + d + e < min:
-            min = a + b + c + d + e
-if min == 100:
+backtracking(0, 0, paper, type)
+if not ans:
     print(-1)
 else:
-    print(min)
+    print(sum(ans))
