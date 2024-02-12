@@ -1,35 +1,35 @@
 import sys
-from collections import deque
 
 input = sys.stdin.readline
-
-
-def isBipartite(graph, visit, start):
-    queue = deque([start])
-    visit[start] = 1
-    while queue:
-        v = queue.popleft()
-        for i in graph[v]:
-            if visit[i] == 0:
-                queue.append(i)
-                visit[i] = visit[v] * -1
-            if visit[v] == visit[i]:
-                return False
-    return True
-
+sys.setrecursionlimit(111111)
 
 k = int(input())
+
+
+def dfs(idx):
+    global disable
+    for i in graph[idx]:
+        if mark[i] > 0:
+            mark[i] = (mark[idx] + 1) * -1
+            dfs(i)
+        if mark[idx] == mark[i]:
+            disable = True
+
+
 for i in range(k):
-    n, m = map(int, input().split())
-    graph = [[] for _ in range(n + 1)]
-    visited = [0] * (n + 1)
-    for j in range(m):
-        u, v = map(int, input().split())
-        graph[u].append(v)
-        graph[v].append(u)
-    for j in range(1, len(graph)):
-        if not visited[j]:
-            result = isBipartite(graph=graph, visit=visited, start=j)
-        if not result:
-            break
-    print("YES") if result else print("NO")
+    v, e = map(int, input().split())
+    graph = [[] for _ in range(v + 1)]
+    for j in range(e):
+        a, b = map(int, input().split())
+        graph[a].append(b)
+        graph[b].append(a)
+    mark = [x for x in range(v + 1)]
+    disable = False
+    for j in range(1, v + 1):
+        if mark[j] > 0:
+            mark[j] = 0
+            dfs(j)
+    if disable:
+        print("NO")
+    else:
+        print("YES")
