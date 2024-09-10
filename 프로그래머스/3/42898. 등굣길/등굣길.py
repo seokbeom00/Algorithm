@@ -31,5 +31,4 @@ def solution(m, n, puddles):
                 board[i][j] = board[i-1][j]
             else:
                 board[i][j] = board[i-1][j] + board[i][j-1]
-    print(board)
     return board[-1][-1] % 1000000007
