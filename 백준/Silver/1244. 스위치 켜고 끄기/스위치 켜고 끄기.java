@@ -25,16 +25,25 @@ public class Main {
         }
     }
 
-    public static void girl(String[] light, int num) {
-        light[num] = switchLight(light[num]); // 자신 토글
 
-        int limit = Math.min(num, light.length - 1 - num); // 대칭 범위 설정
-        for (int i = 1; i <= limit; i++) {
-            if (!light[num - i].equals(light[num + i])) break; // 대칭 깨지면 종료
-            light[num - i] = switchLight(light[num - i]);
-            light[num + i] = switchLight(light[num + i]);
+    public static void girl(String[] light, int num) {
+        light[num] = switchLight(light[num]);
+        for (int i = 1; i <= light.length; i++) {
+            if (num - i < 0 || num + i >= light.length) {
+                break;
+            }
+            String left = light[num - i];
+            String right = light[num + i];
+            if (left.equals(right)) {
+                light[num - i] = switchLight(light[num - i]);
+                light[num + i] = switchLight(light[num + i]);
+            }else {
+                break;
+            }
         }
     }
+
+
 
     public static void boy(String[] light, int num) {
         for (int i = num; i <= light.length; i += num) {
