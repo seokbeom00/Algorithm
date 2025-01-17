@@ -12,14 +12,19 @@ public class Main {
         for (int i = 0; i < parts.length; i++) {
             pos[i] = Integer.parseInt(parts[i]);
         }
-        int ans = 1;
-        while (true) {
-            if (check(pos, ans, n)) {
-                System.out.println(ans);
-                break;
+        int ans = 0;
+        int left = 0;
+        int right = n;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (check(pos, mid, n)) {
+                right = mid - 1;
+                ans = mid;
+            } else {
+                left = mid + 1;
             }
-            ans += 1;
         }
+        System.out.println(ans);
     }
 
     public static boolean check(int[] pos, int height, int n) {
