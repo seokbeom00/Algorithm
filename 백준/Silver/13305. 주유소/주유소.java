@@ -17,8 +17,8 @@ public class Main {
             price[i] = Integer.parseInt(part2[i]);
         }
 
-        int min = price[0];
-        int answer = min * distance[0];
+        long min = price[0];
+        long answer = min * distance[0];
 
         for (int i = 1; i < distance.length; i++) {
             if (price[i] < min) {
