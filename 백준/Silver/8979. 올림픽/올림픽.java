@@ -35,13 +35,17 @@ public class Main{
             return Integer.compare(bronze[n2], bronze[n1]);
         });
         int realRank = 1;
-        for (int i = 1; i < n; i++) {
-            if (gold[rank.get(i - 1)] != gold[rank.get(i)] || silver[rank.get(i - 1)] != silver[rank.get(i)] || bronze[rank.get(i - 1)] != bronze[rank.get(i)]) {
-                realRank = i + 1;
-            }
-            if (rank.get(i) == k) {
-                System.out.println(realRank);
-                break;
+        if (rank.get(0) == k) {
+            System.out.println(1);
+        }else{
+            for (int i = 1; i < n; i++) {
+                if (gold[rank.get(i - 1)] != gold[rank.get(i)] || silver[rank.get(i - 1)] != silver[rank.get(i)] || bronze[rank.get(i - 1)] != bronze[rank.get(i)]) {
+                    realRank = i + 1;
+                }
+                if (rank.get(i) == k) {
+                    System.out.println(realRank);
+                    break;
+                }
             }
         }
     }
