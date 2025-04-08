@@ -18,30 +18,25 @@ public class Main {
             String[] line = br.readLine().split(" ");
             int a = Integer.parseInt(line[0]);
             int b = Integer.parseInt(line[1]);
-            Stack<Integer> stack1 = new Stack<>();
-            Stack<Integer> stack2 = new Stack<>();
-            stack1.push(a);
-            stack2.push(b);
-            dfs(stack1, parent, a);
-            dfs(stack2, parent, b);
-            int answer = 0;
-            while (!stack1.isEmpty() && !stack2.isEmpty()) {
-                if (Objects.equals(stack1.peek(), stack2.peek())) {
-                    answer = stack1.pop();
-                    stack2.pop();
-                }else{
-                    break;
-                }
-            }
-            System.out.println(answer);
+            System.out.println(dfs(parent, a, b));
         }
     }
 
-    public static void dfs(Stack<Integer> stack, int[] parent, int node) {
-        if (parent[node] == 0) {
-            return;
+    public static int dfs(int[] parent, int a, int b) {
+        int answer = 0;
+        boolean[] visit = new boolean[parent.length];
+        visit[a] = true;
+        while (parent[a] != 0) {
+            visit[parent[a]] = true;
+            a = parent[a];
         }
-        stack.push(parent[node]);
-        dfs(stack, parent, parent[node]);
+        while (true) {
+            if (visit[b]) {
+                answer = b;
+                break;
+            }
+            b = parent[b];
+        }
+        return answer;
     }
 }
