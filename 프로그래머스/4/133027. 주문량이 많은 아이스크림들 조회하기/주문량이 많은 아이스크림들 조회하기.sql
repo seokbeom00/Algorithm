@@ -1,9 +1,12 @@
-select flavor
-from(select *
-from FIRST_HALF
-union
-select *
-from JULY) febjul
-group by flavor
-order by sum(total_order) desc
-limit 3
+SELECT RANKING.FLAVOR
+FROM (SELECT f.FLAVOR, SUM(f.TOTAL_ORDER) AS TOTAL
+     FROM FIRST_HALF f
+     GROUP BY f.FLAVOR
+     UNION
+     SELECT j.FLAVOR, SUM(j.TOTAL_ORDER) AS TOTAL
+     FROM JULY j
+     GROUP BY j.FLAVOR
+     ) AS RANKING
+GROUP BY RANKING.FLAVOR
+ORDER BY SUM(RANKING.TOTAL) DESC
+LIMIT 3
