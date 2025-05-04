@@ -1,4 +1,5 @@
-select b.book_id, a.AUTHOR_NAME, date_format(b.PUBLISHED_DATE, '%Y-%m-%d')
-from book b, author a
-where b.author_id = a.author_id and b.category = "경제"
-order by b.PUBLISHED_DATE
+SELECT b.BOOK_ID, a.AUTHOR_NAME, DATE_FORMAT(b.PUBLISHED_DATE, '%Y-%m-%d') AS PUBLISHED_DATE
+FROM BOOK b
+JOIN AUTHOR a ON b.AUTHOR_ID = a.AUTHOR_ID
+WHERE b.CATEGORY = '경제'
+ORDER BY b.PUBLISHED_DATE
